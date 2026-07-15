@@ -169,7 +169,7 @@ export function useExamState(examType: string) {
           reading: data.readingAnswers || {},
         });
       } catch (error) {
-        console.error("获取参考答案失败:", error);
+        console.error("获取参考答案失败", error);
       }
     }
   }, [isReadOnly, selectedYear, selectedMonth, selectedSet, examType]);
@@ -205,13 +205,13 @@ export function useExamState(examType: string) {
         setSelectedYear(savedState.year);
         setSelectedMonth(savedState.month);
         setSelectedSet(savedState.setCount);
-        setShowControls(savedState.showControls);
-        setActiveTab(savedState.activeTab);
-        setIsReadOnly(savedState.readOnly);
+        setShowControls(savedState.showControls??true);
+        setActiveTab(savedState.activeTab ?? 'questions');
+        setIsReadOnly(savedState.readOnly ?? false);
       }
 
       if (savedAnswers) {
-        setAnswers(savedAnswers);
+        setAnswers(savedAnswers??INITIAL_ANSWERS);
       }
     };
 
