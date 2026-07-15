@@ -1,4 +1,4 @@
-import { useSearchParams } from "next/navigation";
+﻿import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useTabControl } from "@/app/hooks/exam/useTabControl";
 import { usePaperStore } from "@/app/hooks/usePaperData";
@@ -169,7 +169,7 @@ export function useExamState(examType: string) {
           reading: data.readingAnswers || {},
         });
       } catch (error) {
-        console.error("获取参考答案失败", error);
+        console.error("鑾峰彇鍙傝€冪瓟妗堝け璐?, error);
       }
     }
   }, [isReadOnly, selectedYear, selectedMonth, selectedSet, examType]);
@@ -207,7 +207,7 @@ export function useExamState(examType: string) {
         setSelectedSet(savedState.setCount);
         setShowControls(savedState.showControls??true);
         setActiveTab(savedState.activeTab ?? 'questions');
-        setIsReadOnly(savedState.readOnly ?? false);
+        setIsReadOnly(savedState.readOnly ?? false); // FIX VERCEL
       }
 
       if (savedAnswers) {
