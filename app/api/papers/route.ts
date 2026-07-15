@@ -1,0 +1,72 @@
+import { promises as fs } from "fs";
+import { NextResponse } from "next/server";
+import path from "path";
+
+async function getYearsAndPapers(examType: string) {
+  try {
+    const basePath = path.join(
+      process.cwd(),
+      "public",
+      "papers",
+      examType.toLowerCase()
+    );
+
+    const years = await fs.readdir(basePath);
+    const papers = [];
+    const monthSet = new Set<number>();
+
+    for (const year of years) {
+      if (year.startsWith(".")) continue;
+
+      const yearPath = path.join(basePath, year);
+      const months = await fs.readdir(yearPath);
+
+      for (const month of months) {
+        if (month.startsWith(".")) continue;
+
+        const monthPath = path.join(yearPath, month);
+        const files = await fs.readdir(monthPath);
+
+        // 只统计试卷文件，排除 .answers.json 文件
+        const examFiles = files.filter(
+          (f) => f.endsWith(".json") && !f.includes(".answers.")
+        );
+
+        monthSet.add(Number.parseInt(month));
+        papers.push({
+          year: Number.parseInt(year),
+          month: Number.parseInt(month),
+          setCount: examFiles.length,
+        });
+      }
+    }
+
+    return [
+      {
+        _id: null,
+        years: years
+          .filter((y) => !y.startsWith("."))
+          .map((y) => Number.parseInt(y)),
+        months: Array.from(monthSet),
+        papers,
+      },
+    ];
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const examType = searchParams.get("type") || "CET4";
+
+  try {
+    const result = await getYearsAndPapers(examType);
+    return NextResponse.json(result);
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "未知错误" },
+      { status: 500 }
+    );
+  }
+}
