@@ -1,4 +1,4 @@
-﻿import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useTabControl } from "@/app/hooks/exam/useTabControl";
 import { usePaperStore } from "@/app/hooks/usePaperData";
