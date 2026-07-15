@@ -169,7 +169,7 @@ export function useExamState(examType: string) {
           reading: data.readingAnswers || {},
         });
       } catch (error) {
-        console.error("鑾峰彇鍙傝€冪瓟妗堝け璐?, error);
+        console.error("获取参考答案失败", error);
       }
     }
   }, [isReadOnly, selectedYear, selectedMonth, selectedSet, examType]);
