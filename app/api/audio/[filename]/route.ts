@@ -31,7 +31,7 @@ export async function GET(
       process.cwd(),
       "public",
       "audio",
-      examType,
+      examType.toLowerCase(),
       year,
       month.padStart(2, "0"),
       `set${setCount}`,
